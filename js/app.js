@@ -20,6 +20,30 @@ $(document).ready(function() {
            map: map,
            animation: google.maps.Animation.DROP
        });
+
+       //catch click event on marker
+       var infoWindow = new google.maps.InfoWindow();
+       // put img element in here in place of h2 for the challenge
+       infoWindow.setContent('<p>Here I am!!</p>');
+
+       google.maps.event.addListener(marker, 'click', function() {
+          console.log('marker clicked!');
+           infoWindow.open(map, marker);
+           map.panTo(marker.getPosition());
+       });
+
+    } // createMap()
+
+    function onGeoSuccess(position) {
+        var center = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        }
+        createMap(center, 14);
+    }
+
+    function onGeoError (error) {
+        console.log(error);
     }
 
     var uwCoords = {
@@ -28,7 +52,10 @@ $(document).ready(function() {
     };
 
     if (navigator && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+        navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError, {
+            // switches on gps
+            enableHighAccuracy: true
+        });
     }
     else{
         createMap(uwCoords, 14)
