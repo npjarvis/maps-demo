@@ -26,5 +26,12 @@ $(document).ready(function() {
         lat: 47.655,
         lng: -122.3080
     };
-    createMap(uwCoords, 14)
+
+    if (navigator && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+    }
+    else{
+        createMap(uwCoords, 14)
+    }
+
 });
